@@ -1,10 +1,21 @@
+
+import { BooksController } from './Controllers/books/books.controller';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { BooksService } from './Services/books/books.service';
+import { BookRepository } from './Mongo/repository/book.repository';
+import { BookSchema } from './Mongo/Schemas/book.schema';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/biblioteca', {useNewUrlParser: true, useUnifiedTopology: true}),
+
+    MongooseModule.forFeature([
+      {name: 'book', schema: BookSchema}
+    ])
+
+  ],
+  controllers: [BooksController],
+  providers: [BooksService, BookRepository],
 })
 export class AppModule {}
